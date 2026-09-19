@@ -138,3 +138,4 @@ The demo keeps 1,018 registry records but exposes five retrieval results by defa
 ## 19. Future Improvements
 
 Add authenticated users, durable LangGraph checkpoints, real embeddings, tool version rollout, distributed audit storage, human approval for high-risk operations, and an optional LLM planner/response adapter.
+# Scalable-Agentic-Shopping-System
