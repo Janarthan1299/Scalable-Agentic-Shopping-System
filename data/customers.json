@@ -1,0 +1,5 @@
+[
+ {"customer_id":"C001","name":"Aarav Mehta","email":"aarav@example.com","address":"12 Lake Road"},
+ {"customer_id":"C002","name":"Maya Singh","email":"maya@example.com","address":"8 Park Avenue"},
+ {"customer_id":"C003","name":"Noah Thomas","email":"noah@example.com","address":"44 Green Street"}
+]

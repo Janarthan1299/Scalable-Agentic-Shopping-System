@@ -1,0 +1,7 @@
+[
+ {"product_id":"P001","name":"Aster 14 Laptop","category":"laptop","price":45999,"rating":4.7,"stock":12},
+ {"product_id":"P002","name":"Nova Pro Laptop","category":"laptop","price":62999,"rating":4.9,"stock":0},
+ {"product_id":"P003","name":"PixelBook Air","category":"laptop","price":39999,"rating":4.5,"stock":7},
+ {"product_id":"P004","name":"WorkMate Laptop","category":"laptop","price":49999,"rating":4.6,"stock":4},
+ {"product_id":"P005","name":"Orbit Wireless Headphones","category":"audio","price":7999,"rating":4.4,"stock":30}
+]

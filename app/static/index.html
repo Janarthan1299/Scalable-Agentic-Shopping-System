@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scalable Agentic Shopping Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 15% 15%, #0f172a 0%, #020617 100%);
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --accent-purple: #8b5cf6;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(15, 23, 42, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #c4b5fd;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-cyan {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: rgba(6, 182, 212, 0.3);
+      color: #67e8f9;
+    }
+
+    /* Main Layout */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+      flex: 1;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .preset-btn {
+      width: 100%;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 0.75rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .preset-btn:hover {
+      background: rgba(139, 92, 246, 0.15);
+      border-color: var(--accent-purple);
+      transform: translateY(-2px);
+    }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-link {
+      color: var(--accent-cyan);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .nav-link:hover {
+      background: rgba(6, 182, 212, 0.1);
+    }
+
+    /* Chat Area */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .chat-box {
+      flex: 1;
+      min-height: 480px;
+      max-height: 600px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-right: 0.5rem;
+    }
+
+    .chat-message {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-width: 85%;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message-user {
+      align-self: flex-end;
+    }
+
+    .message-user .bubble {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+      color: white;
+      border-radius: 18px 18px 2px 18px;
+    }
+
+    .message-agent {
+      align-self: flex-start;
+    }
+
+    .message-agent .bubble {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      border-radius: 18px 18px 18px 2px;
+    }
+
+    .bubble {
+      padding: 1rem 1.25rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    .meta-tag {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+
+    .meta-tag-highlight {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    /* Input Bar */
+    .input-form {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 0.875rem 1.25rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0 1.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    /* Stats Panel */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      padding: 0.75rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .stat-lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="logo-icon">🛍️</div>
+      <div>
+        <div class="brand-title">Scalable Agentic Shopping System</div>
+      </div>
+    </div>
+    <div class="badges">
+      <span class="badge">1,018 Registry Tools</span>
+      <span class="badge badge-cyan">Top-K Tool Retrieval (K=5)</span>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+      
+      <div class="glass-card">
+        <div class="card-title">System Metrics</div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-val">1,018</div>
+            <div class="stat-lbl">Total Tools</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">5</div>
+            <div class="stat-lbl">Max Exposed</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">18</div>
+            <div class="stat-lbl">Live Handlers</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-title">Example Queries</div>
+        <button class="preset-btn" onclick="sendPreset('Where is my order O10025?')">
+          <span>📦</span> Track Order O10025
+        </button>
+        <button class="preset-btn" onclick="sendPreset('What is your return policy?')">
+          <span>📜</span> Check Return Policy (RAG)
+        </button>
+        <button class="preset-btn" onclick="sendPreset('What tools are available for managing orders?')">
+          <span>🔍</span> Search System Capabilities
+        </button>
+        <button class="preset-btn" onclick="sendPreset('Find a laptop under 50000 with the highest rating and check stock')">
+          <span>💻</span> Complex Multi-Step Shopping
+        </button>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-title">API Endpoints</div>
+        <div class="link-list">
+          <a class="nav-link" href="/docs" target="_blank">
+            <span>Interactive Swagger API</span> <span>↗</span>
+          </a>
+          <a class="nav-link" href="/demo/scalability" target="_blank">
+            <span>Scalability Benchmark</span> <span>↗</span>
+          </a>
+          <a class="nav-link" href="/tools" target="_blank">
+            <span>Tool Registry Metadata</span> <span>↗</span>
+          </a>
+          <a class="nav-link" href="/health" target="_blank">
+            <span>Health Status Check</span> <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="glass-card" style="display: flex; flex-direction: column; flex: 1;">
+        <div class="card-title">
+          <span>Agent Workspace & Chat</span>
+          <span style="font-weight: normal; font-size: 0.75rem; text-transform: none; color: #4ade80;">● Agent Ready</span>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+          <div class="chat-message message-agent">
+            <div class="bubble">
+              👋 Welcome! I am your <strong>Scalable Agentic Shopping Assistant</strong>.<br><br>
+              Out of 1,000+ available shopping tools, I dynamically retrieve and bind only the <strong>Top-K most relevant tools</strong> for your prompt to maximize latency and accuracy.
+              <br><br>Try asking a question below or click one of the example prompts!
+            </div>
+          </div>
+        </div>
+
+        <form class="input-form" onsubmit="handleSend(event)" style="margin-top: 1rem;">
+          <input type="text" id="userInput" class="chat-input" placeholder="Ask about orders, products, return policies, or tools..." required />
+          <button type="submit" class="send-btn" id="sendBtn">
+            <span>Send</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chatBox');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function sendPreset(text) {
+      userInput.value = text;
+      handleSend(new Event('submit'));
+    }
+
+    async function handleSend(e) {
+      if (e) e.preventDefault();
+      const query = userInput.value.trim();
+      if (!query) return;
+
+      // Add user message
+      appendMessage(query, 'user');
+      userInput.value = '';
+      sendBtn.disabled = true;
+
+      // Add loading state
+      const loadingId = appendLoading();
+
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: 'C001', message: query })
+        });
+        const data = await response.json();
+
+        removeLoading(loadingId);
+
+        appendAgentResponse(data);
+      } catch (err) {
+        removeLoading(loadingId);
+        appendMessage('Error communicating with shopping agent: ' + err.message, 'agent');
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+    function appendMessage(text, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-message message-${sender}`;
+      msgDiv.innerHTML = `<div class="bubble">${escapeHtml(text)}</div>`;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function appendAgentResponse(data) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-message message-agent';
+
+      let toolsHtml = '';
+      if (data.tools_used && data.tools_used.length > 0) {
+        toolsHtml = data.tools_used.map(t => `<span class="meta-tag meta-tag-highlight">⚡ Tool: ${escapeHtml(t)}</span>`).join(' ');
+      }
+
+      msgDiv.innerHTML = `
+        <div class="bubble">
+          ${escapeHtml(data.response || 'No response generated')}
+          <div class="meta-tags">
+            <span class="meta-tag">ID: ${escapeHtml(data.request_id)}</span>
+            <span class="meta-tag">Status: ${escapeHtml(data.status)}</span>
+            ${toolsHtml}
+          </div>
+        </div>
+      `;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function appendLoading() {
+      const id = 'load-' + Date.now();
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-message message-agent';
+      msgDiv.id = id;
+      msgDiv.innerHTML = `<div class="bubble" style="color: var(--text-muted);">Thinking & retrieving tools...</div>`;
+      chatBox.appendChild(msgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return id;
+    }
+
+    function removeLoading(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>

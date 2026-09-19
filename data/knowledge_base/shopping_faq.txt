@@ -1,0 +1,1 @@
+Customers can search products by category and price, compare ratings, check stock, and view order delivery status from the shopping assistant.
